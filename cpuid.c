@@ -1124,10 +1124,15 @@ EXPORT_SYMBOL_GPL(kvm_cpuid);
 
 /*283 assignment 2,Tingjia Zhang: */
 
+/* 
+For CPUID leaf node %eax=0x4FFFFFFF:
+◦ Return the total number of exits (all types) in %eax
+*/
+
 atomic_t exit_Num = ATOMIC_INIT(0);
 atomic_long_t times = ATOMIC_INIT(0);
 
-int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
+int kvm_emulate_cpuid_1(struct kvm_vcpu *vcpu)
 {
 	u32 eax, ebx, ecx, edx;
 
@@ -1152,7 +1157,55 @@ if (eax == 0x4FFFFFFF) {
 
 		edx = 0x1996
 
-printk("CPUID(0x4FFFFFFF), exits= %d, cycles spent in exit= %ld", atomic_read(&exit_Num), atomic_long_read(&times));
+		printk("CPUID(0x4FFFFFFF), exits= %d, cycles spent in exit= %ld", atomic_read(&exit_Num), atomic_long_read(&times));
+	} 
+	else {
+		kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
+	}
+
+
+	
+	kvm_rax_write(vcpu, eax);
+	kvm_rbx_write(vcpu, ebx);
+	kvm_rcx_write(vcpu, ecx);
+	kvm_rdx_write(vcpu, edx);
+	return kvm_skip_emulated_instruction(vcpu);
+}
+EXPORT_SYMBOL_GPL(kvm_emulate_cpuid_1);
+EXPORT_SYMBOL_GPL(exit_Num);
+EXPORT_SYMBOL_GPL(times);
+
+/*
+For CPUID leaf node %eax=0x4FFFFFFE:
+◦ Return the high 32 bits of the total time spent processing all exits in %ebx
+◦ Return the low 32 bits of the total time spent processing all exits in %ecx
+▪ %ebx and %ecx return values are measured in processor cycles, across all VCPUs
+*/
+atomic_t exitCounts = ATOMIC_INIT(0);
+atomic_long_t timeSpend = ATOMIC_INIT(0);
+
+int kvm_emulate_cpuid_2(struct kvm_vcpu *vcpu)
+{
+	u32 eax, ebx, ecx, edx;
+
+	if (cpuid_fault_enabled(vcpu) && !kvm_require_cpl(vcpu, 0))
+		return 1;
+	eax = kvm_rax_read(vcpu);
+	ecx = kvm_rcx_read(vcpu);
+	
+	if (eax == 0x4FFFFFFE) {
+		long time = atomic_long_read(&timeSpend);
+
+		
+		eax = atomic_read(&exitCounts);
+
+		// return the high 32 bits of the total time spent processing all exits in ebx
+		// return the low 32 bits of the total time spent processing all exits in ecx
+		ecx = (u32) time;
+		ebx = time >> 32;
+		edx = 0x1996;
+
+		printk("CPUID(0x4FFFFFFF), exits= %d, cycles spent in exit= %ld", atomic_read(&exitCounts), atomic_long_read(&timeSpend));
 	} else {
 		kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
 	}
@@ -1163,8 +1216,7 @@ printk("CPUID(0x4FFFFFFF), exits= %d, cycles spent in exit= %ld", atomic_read(&e
 	kvm_rdx_write(vcpu, edx);
 	return kvm_skip_emulated_instruction(vcpu);
 }
-EXPORT_SYMBOL_GPL(kvm_emulate_cpuid);
-EXPORT_SYMBOL_GPL(exit_Num);
-EXPORT_SYMBOL_GPL(times);
-
+EXPORT_SYMBOL_GPL(kvm_emulate_cpuid_2);
+EXPORT_SYMBOL_GPL(exitCounts);
+EXPORT_SYMBOL_GPL(timeSpend);
 
