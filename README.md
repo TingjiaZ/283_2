@@ -2,6 +2,22 @@
 
 -For each member in your team, provide 1 paragraph detailing what parts of the lab that member implemented / researched. (You may skip this question if you are doing the lab by yourself).
 
+For CPUID leaf node %eax=0x4FFFFFFF:
+◦ Return the total number of exits (all types) in %eax
+• For CPUID leaf node %eax=0x4FFFFFFE:
+◦ Return the high 32 bits of the total time spent processing all exits in %ebx
+◦ Return the low 32 bits of the total time spent processing all exits in %ecx
+▪ %ebx and %ecx return values are measured in processor cycles, across all VCPUs
+• For CPUID leaf node %eax=0x4FFFFFFD:
+◦ Return the number of exits for the exit number provided (on input) in %ecx
+▪ This value should be returned in %eax
+• For CPUID leaf node %eax=0x4FFFFFFC:
+◦ Return the time spent processing the exit number provided (on input) in %ecx
+▪ Return the high 32 bits of the total time spent for that exit in %ebx
+▪ Return the low 32 bits of the total time spent for that exit in %ecx
+
+For assignemnt 2, the leaf chosend is the 0x4FFFFFFE and 0x4FFFFFFE.
+
 -Describe in detail the steps you used to complete the assignment. Consider your reader to be someone skilled in software development but otherwise unfamiliar with the assignment. Good answers to this question will be recipes that someone can follow to reproduce your development steps.
 Individual assignment by Tingjia;
 
