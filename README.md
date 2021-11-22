@@ -1,5 +1,9 @@
 # 283_2
-Individual assignment by Tingjia:
+
+-For each member in your team, provide 1 paragraph detailing what parts of the lab that member implemented / researched. (You may skip this question if you are doing the lab by yourself).
+
+-Describe in detail the steps you used to complete the assignment. Consider your reader to be someone skilled in software development but otherwise unfamiliar with the assignment. Good answers to this question will be recipes that someone can follow to reproduce your development steps.
+Individual assignment by Tingjia;
 
 1. Use the ubuntu enviornemnt for previous assignment and clone linux kernel from https://github.com/torvalds/linux.git.
 2. nstall libs that needed for building linux kernel.
@@ -13,4 +17,5 @@ Individual assignment by Tingjia:
 10.Emulate cpuid instruction with CPUID packed installed in KVM(sudo apt-get install cpuid)
 
 -does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations? Approximately how many exits does a full VM boot entail?
+
 No, the number of exits do not increase at a stable rate. There are more exits performed during certain VM operations. A full VM boot entail around 420000 exits.
