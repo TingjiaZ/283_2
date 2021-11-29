@@ -16,7 +16,7 @@ For CPUID leaf node %eax=0x4FFFFFFF:
 ▪ Return the high 32 bits of the total time spent for that exit in %ebx
 ▪ Return the low 32 bits of the total time spent for that exit in %ecx
 
-For assignemnt 2, the leaf chosend is the 0x4FFFFFFE and 0x4FFFFFFE.
+For assignemnt 2, the leaf chosend is the 0x4FFFFFFE and 0x4FFFFFFF.
 
 -Describe in detail the steps you used to complete the assignment. Consider your reader to be someone skilled in software development but otherwise unfamiliar with the assignment. Good answers to this question will be recipes that someone can follow to reproduce your development steps.
 Individual assignment by Tingjia;
